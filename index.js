@@ -1,24 +1,34 @@
-const express = require("express");
+``javascript
+const express = require('express');
 const app = express();
-const PORT = process.env.PORT || 10000;
+const port = process.env.PORT || 3000;
 
-app.get("/webhook", (req, res) => {
-  const VERIFY_TOKEN = "mytoken"; // تأكد تحط نفس التوكين اللي في واتساب
+// Middleware to parse JSON bodies
+app.use(express.json());
 
-  const mode = req.query["hub.mode"];
-  const token = req.query["hub.verify_token"];
-  const challenge = req.query["hub.challenge"];
+// Webhook verification (this is needed to validate the webhook)
+app.get('/webhook', (req, res) => {
+    const mode = req.query['hub.mode'];
+    const token = req.query['hub.verify_token'];
+    const challenge = req.query['hub.challenge'];
 
-  if (mode && token) {
-    if (mode === "subscribe" && token === VERIFY_TOKEN) {
-      console.log("WEBHOOK_VERIFIED");
-      res.status(200).send(challenge);
+    const VERIFY_TOKEN = 'your_verify_token';  // Replace with your token
+
+    if (mode && token) {
+        if (mode === 'subscribe' && token === VERIFY_TOKEN) {
+            console.log('Webhook verified');
+            res.status(200).send(challenge);
+        } else {
+            res.sendStatus(403);  // Forbidden if token doesn't match
+        }
     } else {
-      res.sendStatus(403);
+        res.sendStatus(400);  // Bad request if parameters are missing
     }
-  }
 });
 
-app.listen(PORT, () => {
-  console.log("Server is running on port", PORT);
-});
+// Webhook POST endpoint to handle incoming messages
+app.post('/webhook', (req, res) => {
+    console.log('Received Webhook:', req.body);  // Log incoming data from Webhook
+
+    // Here you can handle the data (like sending a message or storing it)
+    // For now, just send a success response
