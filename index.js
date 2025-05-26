@@ -10,6 +10,7 @@ app.get('/webhook', (req, res) => {
   const mode = req.query['hub.mode'];
   const token = req.query['hub.verify_token'];
   const challenge = req.query['hub.challenge'];
+  console.log("GET webhook hit",req.query);
 
   const VERIFY_TOKEN = 'mytoken'; // استبدلها بتوكينك الخاص
 
