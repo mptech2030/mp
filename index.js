@@ -12,7 +12,7 @@ app.get('/webhook', (req, res) => {
   const token = req.query['hub.verify_token'];
   const challenge = req.query['hub.challenge'];
 
-  const VERIFY_TOKEN = 'mytoken'; // Replace with your token
+  const VERIFY_TOKEN = 'mytoken'; // استبدلها بتوكينك الخاص
 
   if (mode && token) {
     if (mode === 'subscribe' && token === VERIFY_TOKEN) {
