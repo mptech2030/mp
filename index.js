@@ -1,5 +1,3 @@
-تمام! هنا هو الكود بعد استبدال your_verify_token بـ mytoken:
-
 javascript
 const express = require('express');
 const app = express();
